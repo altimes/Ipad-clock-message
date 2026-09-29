@@ -38,4 +38,6 @@ Clock without message
 
 Clock with message
 
-<img width="1180" height="820" alt="Message" src="https://github.com/user-attachments/assets/9d4a068f-8aa9-412d-b88c-d67a8ecfaec0" />
+<img width="320" height="223" alt="Message" src="https://github.com/user-attachments/assets/9ec6d4f4-470a-48b9-bd05-e41f3847532a" />
+
+
