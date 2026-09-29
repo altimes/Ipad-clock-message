@@ -31,3 +31,11 @@ Manager view on iPad safari.
 
 
 <img width="640" height="445" alt="manager view" src="https://github.com/user-attachments/assets/abffcbe5-e7e7-4182-9205-49ba19b7b525" />
+
+Clock without message 
+
+<img width="1180" height="820" alt="Clock" src="https://github.com/user-attachments/assets/58fd0837-5674-423a-b5d5-4a2d68260bb2" />
+
+Clock with message
+
+<img width="1180" height="820" alt="Message" src="https://github.com/user-attachments/assets/9d4a068f-8aa9-412d-b88c-d67a8ecfaec0" />
