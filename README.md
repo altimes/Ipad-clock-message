@@ -27,5 +27,7 @@ This code is freely available for any usage by anyone.
 It is fairly straightforward and should be adaptable to other contexts (Android) / servers.
 That, as the saying goes,  is left as an exercise for the student.
 
+Manager view on iPad safari.
+
 
 <img width="640" height="445" alt="manager view" src="https://github.com/user-attachments/assets/abffcbe5-e7e7-4182-9205-49ba19b7b525" />
