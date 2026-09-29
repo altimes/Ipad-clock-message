@@ -34,10 +34,13 @@ Manager view on iPad safari.
 
 Clock without message 
 
-<img width="1180" height="820" alt="Clock" src="https://github.com/user-attachments/assets/58fd0837-5674-423a-b5d5-4a2d68260bb2" />
+
+<img width="320" height="223" alt="image" src="https://github.com/user-attachments/assets/b2f077bb-41d2-41bc-aaab-bcbae700fe96" />
+
 
 Clock with message
 
-<img width="320" height="223" alt="Message" src="https://github.com/user-attachments/assets/9ec6d4f4-470a-48b9-bd05-e41f3847532a" />
+<img width="320" height="223" alt="Message" src="https://github.com/user-attachments/assets/9ec6d4f4-470a-48b9-bd05-e41f3847532a" 
+/>
 
 
