@@ -1,119 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Sync Clock</title>
-    <style type="text/css">
-        html,body {margin:0;padding:0;position:absolute;left:0;top:0;right:0;bottom:0;background-color:#000000;color:#ffffff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden;-webkit-text-size-adjust:none;}
-        .view {display:none;}
-        .view.active {display:block;}
-        .clock-container {position:absolute;left:0;top:0;right:0;bottom:0;}
-        .date-wrapper {position:absolute;top:50px;left:0;width:100%;text-align:center;}
-        .date-top {font-size:97px;color:#ffffff;letter-spacing:3px;font-weight:700;line-height:normal;text-align:center;margin:0;padding:0;}
-        .date-bottom {font-size:113px;color:#ffffff;letter-spacing:4px;white-space:nowrap;font-weight:700;line-height:normal;text-align:center;margin:10px 0 0 0;padding:0;}
-        .time-wrapper {position:absolute;bottom:50px;left:0;width:100%;text-align:center;}
-        .time-value {font-size:160px;letter-spacing:8px;white-space:nowrap;font-weight:700;line-height:normal;text-align:center;margin:0;padding:0;}
-        .message-wrapper {position:absolute;top:50px;left:5%;width:90%;text-align:center;}
-        .message-value {font-size:100px;color:#ffffff;font-weight:700;line-height:normal;word-wrap:break-word;}
-        .sub-time-wrapper {position:absolute;bottom:50px;left:0;width:100%;text-align:center;}
-        .sub-time-value {font-size:160px;letter-spacing:8px;white-space:nowrap;font-weight:700;line-height:normal;color:#dddddd;}
-    </style>
-</head>
-<body>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+            <title>Sync Clock</title>
+            <style type="text/css">
+              html,body {margin:0;padding:0;position:absolute;left:0;top:0;right:0;bottom:0;background-color:#000000;color:#ffffff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden;-webkit-text-size-adjust:none;}
+              .view {display:none;}
+              .view.active {display:block;}
+              .clock-container {position:absolute;left:0;top:0;right:0;bottom:0;}
+              .date-wrapper {position:absolute;top:50px;left:0;width:100%;text-align:center;}
+              .date-top {font-size:97px;color:#ffffff;letter-spacing:3px;font-weight:700;line-height:normal;text-align:center;margin:0;padding:0;}
+              .date-bottom {font-size:113px;color:#ffffff;letter-spacing:4px;white-space:nowrap;font-weight:700;line-height:normal;text-align:center;margin:10px 0 0 0;padding:0;}
+              .time-wrapper {position:absolute;bottom:50px;left:0;width:100%;text-align:center;}
+              .time-value {font-size:160px;letter-spacing:8px;white-space:nowrap;font-weight:700;line-height:normal;text-align:center;margin:0;padding:0;}
+              .message-wrapper {position:absolute;top:50px;left:5%;width:90%;text-align:center;}
+              .message-value {font-size:100px;color:#ffffff;font-weight:700;line-height:normal;word-wrap:break-word;}
+              .sub-time-wrapper {position:absolute;bottom:50px;left:0;width:100%;text-align:center;}
+              .sub-time-value {font-size:160px;letter-spacing:8px;white-space:nowrap;font-weight:700;line-height:normal;color:#dddddd;}
+            </style>
+  </head>
+  <body>
     <div id="time-screen" class="view active">
-        <div class="clock-container">
-            <div class="date-wrapper">
-                <div class="date-top" id="date-top">Loading...</div>
-                <div class="date-bottom" id="date-bottom">Loading...</div>
-            </div>
-            <div class="time-wrapper">
-                <div class="time-value" id="time-value">00:00</div>
-            </div>
+      <div class="clock-container">
+        <div class="date-wrapper">
+          <div class="date-top" id="date-top">Loading...</div>
+          <div class="date-bottom" id="date-bottom">Loading...</div>
         </div>
+        <div class="time-wrapper">
+          <div class="time-value" id="time-value">00:00</div>
+        </div>
+      </div>
     </div>
     <div id="message-screen" class="view">
-        <div class="message-wrapper">
-            <div class="message-value" id="message-value">Loading message...</div>
-        </div>
-        <div class="sub-time-wrapper">
-            <div class="sub-time-value" id="sub-time-value">00:00</div>
-        </div>
+      <div class="message-wrapper">
+        <div class="message-value" id="message-value">Loading message...</div>
+      </div>
+      <div class="sub-time-wrapper">
+        <div class="sub-time-value" id="sub-time-value">00:00</div>
+      </div>
     </div>
     <script type="text/javascript">
-        function pad(num,size) {var s=num+"";while(s.length<size){s="0"+s;}return s;}
-        var dayNames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-        var monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-        var dateInitialized=false;
-        function updateClock() {
-            var now=new Date();
-            var h=now.getHours();
-            var m=now.getMinutes();
-            var s=now.getSeconds();
-            var dayIndex=now.getDay();
-            var dayName=dayNames[dayIndex];
-            document.getElementById("date-top").innerHTML=dayName;
-            var currentMonthIndex=now.getMonth();
-            var monthName=monthNames[currentMonthIndex];
-            var currentDate=now.getDate();
-            var currentYear=now.getFullYear();
-            if(!dateInitialized){document.getElementById("date-bottom").innerHTML=currentDate;dateInitialized=true;}
-            else{document.getElementById("date-bottom").innerHTML=currentDate+" "+monthName+" "+currentYear;}
-            var ampm=h>=12?"PM":"AM";
-            if(h===0){h=12;}else if(h>12){h-=12;}
-            var timeString=pad(h,2)+":"+pad(m,2)+" "+ampm;
-            document.getElementById("time-value").innerHTML=timeString;
-            document.getElementById("sub-time-value").innerHTML=timeString;
-            var rawH=now.getHours();var rawM=now.getMinutes();var rawS=now.getSeconds();
-            var targetBlack={r:0,g:0,b:0};var targetBlue={r:65,g:105,b:225};
-            var totalSecondsInDay=24*3600;var secondsElapsed=(rawH*3600)+(rawM*60)+rawS;
-            var angle=(Math.PI*secondsElapsed)/totalSecondsInDay;var progress=Math.sin(angle);
-            var r=Math.round(targetBlack.r+(targetBlue.r-targetBlack.r)*progress);
-            var g=Math.round(targetBlack.g+(targetBlue.g-targetBlack.g)*progress);
-            var b=Math.round(targetBlack.b+(targetBlue.b-targetBlack.b)*progress);
-            document.body.style.backgroundColor="rgb("+r+","+g+","+b+")";
-        }
-        updateClock();
-        setInterval(updateClock,1000);
-        var timeScreen=document.getElementById('time-screen');
-        var messageScreen=document.getElementById('message-screen');
-        var messageValue=document.getElementById('message-value');
-        var latestMessage="";
-        var currentVisibleView="time";
-        function fetchMessage() {
-            var xhr=new XMLHttpRequest();
-            var cacheBuster="message.txt?t="+new Date().getTime();
-            xhr.open("GET",cacheBuster,true);
-            xhr.onreadystatechange=function() {
-                if(xhr.readyState===4&&xhr.status===200) {
-                    latestMessage=xhr.responseText.replace(/^\s+|\s+$/g,'');
-                    messageValue.innerHTML=latestMessage;
-                }
-            };
-            xhr.send(null);
-        }
-        function cycleViews() {
-            if(latestMessage==="") {
-                timeScreen.className="view active";
-                messageScreen.className="view";
-                currentVisibleView="time";
-                return;
+      function pad(num,size) {var s=num+"";while(s.length<size){s="0"+s;}return s;}
+      var dayNames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      var monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      var dateInitialized=false;
+      function updateClock() {
+        var now=new Date();
+        var h=now.getHours();
+        var m=now.getMinutes();
+        var s=now.getSeconds();
+        var dayIndex=now.getDay();
+        var dayName=dayNames[dayIndex];
+        document.getElementById("date-top").innerHTML=dayName;
+        var currentMonthIndex=now.getMonth();
+        var monthName=monthNames[currentMonthIndex];
+        var currentDate=now.getDate();
+        var currentYear=now.getFullYear();
+        if(!dateInitialized){document.getElementById("date-bottom").innerHTML=currentDate;dateInitialized=true;}
+        else{document.getElementById("date-bottom").innerHTML=currentDate+" "+monthName+" "+currentYear;}
+        var ampm=h>=12?"PM":"AM";
+        if(h===0){h=12;}else if(h>12){h-=12;}
+        var timeString=pad(h,2)+":"+pad(m,2)+" "+ampm;
+        document.getElementById("time-value").innerHTML=timeString;
+        document.getElementById("sub-time-value").innerHTML=timeString;
+        var rawH=now.getHours();var rawM=now.getMinutes();var rawS=now.getSeconds();
+        var targetBlack={r:0,g:0,b:0};var targetBlue={r:65,g:105,b:225};
+        var totalSecondsInDay=24*3600;var secondsElapsed=(rawH*3600)+(rawM*60)+rawS;
+        var angle=(Math.PI*secondsElapsed)/totalSecondsInDay;var progress=Math.sin(angle);
+        var r=Math.round(targetBlack.r+(targetBlue.r-targetBlack.r)*progress);
+        var g=Math.round(targetBlack.g+(targetBlue.g-targetBlack.g)*progress);
+        var b=Math.round(targetBlack.b+(targetBlue.b-targetBlack.b)*progress);
+        document.body.style.backgroundColor="rgb("+r+","+g+","+b+")";
+      }
+      function scheduleClockUpdate() {
+          setTimeout(function() {
+              updateClock();
+              scheduleClockUpdate();
+          },1000);
+      }
+      updateClock();
+      scheduleClockUpdate();
+      var timeScreen=document.getElementById('time-screen');
+      var messageScreen=document.getElementById('message-screen');
+      var messageValue=document.getElementById('message-value');
+      var latestMessage="";
+      var currentVisibleView="time";
+      function fetchMessage(callback) {
+        var xhr=new XMLHttpRequest();
+        var cacheBuster="message.txt?t="+new Date().getTime();
+        
+        xhr.open("GET",cacheBuster,true);
+        
+        xhr.onreadystatechange=function() {
+          if(xhr.readyState===4) {
+            if(xhr.status===200) {
+              latestMessage=xhr.responseText.replace(/^\s+|\s+$/g,'');
+              messageValue.innerHTML=latestMessage;
             }
-            if(currentVisibleView==="time") {
-                timeScreen.className="view";
-                messageScreen.className="view active";
-                currentVisibleView="message";
-            }else{
-                timeScreen.className="view active";
-                messageScreen.className="view";
-                currentVisibleView="time";
+            
+            if(callback) {
+              callback();
             }
+          }
+        };
+        
+        xhr.send(null);
+      }
+      function cycleViews() {
+        if(latestMessage==="") {
+          timeScreen.className="view active";
+          messageScreen.className="view";
+          currentVisibleView="time";
+          return;
         }
-        fetchMessage();
-        setInterval(fetchMessage,5000);
-        setInterval(cycleViews,6000);
+        if(currentVisibleView==="time") {
+          timeScreen.className="view";
+          messageScreen.className="view active";
+          currentVisibleView="message";
+        }else{
+          timeScreen.className="view active";
+          messageScreen.className="view";
+          currentVisibleView="time";
+        }
+      }
+      function scheduleDisplayCycle() {
+        setTimeout(function() {
+          fetchMessage(function() {
+            cycleViews();
+            scheduleDisplayCycle();
+          });
+        },10000);
+      }
+      
+      fetchMessage(function() {
+        scheduleDisplayCycle();
+      });
     </script>
-</body>
+  </body>
 </html>
